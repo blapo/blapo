@@ -55,58 +55,57 @@ module cup_body() {
 
 // CORRECTED Handle module
 module handle() {
-    // Calculate cup radius at handle height
-    handle_height = cup_height * 0.4;
-    cup_radius_at_handle = cup_bottom_radius + 
-        (cup_top_radius - cup_bottom_radius) * (handle_height / cup_height);
+    // Fixed values to avoid calculation issues
+    handle_height = cup_height * 0.4; // = 24
+    handle_radius = 29; // Approximate radius at handle height
     
-    // Position handle at the correct height
     translate([0, 0, handle_height]) {
         union() {
             // Main handle loop
             difference() {
-                // Outer handle shape - toro posizionato correttamente
-                translate([cup_radius_at_handle + 14, 0, 0])
-                    rotate([90, 0, 0])
-                        rotate_extrude($fn = 50)
-                            translate([12, 0, 0])
+                // Outer handle shape - toro
+                translate([handle_radius + 14, 0, 0]) {
+                    rotate([90, 0, 0]) {
+                        rotate_extrude($fn = 50) {
+                            translate([12, 0, 0]) {
                                 circle(r = handle_width/2, $fn = 20);
+                            }
+                        }
+                    }
+                }
                 
-                // Cut away inner part of cup to avoid interference
+                // Cut away inner part to avoid interference with cup
                 cylinder(h = handle_width*2, 
-                        r = cup_radius_at_handle + 5, 
+                        r = handle_radius + 5, 
                         center = true, 
                         $fn = 100);
                 
-                // Cut to create C-shape (opening toward cup)
-                translate([cup_radius_at_handle - 5, -handle_width, -handle_width])
+                // Cut to create C-shape opening toward cup
+                translate([handle_radius - 5, -handle_width, -handle_width])
                     cube([30, handle_width*2, handle_width*2]);
             }
             
             // Connection piece to cup wall
             hull() {
-                // Point on cup surface
-                translate([cup_radius_at_handle, 0, 0])
+                translate([handle_radius, 0, 0])
                     sphere(r = handle_width/3, $fn = 20);
-                
-                // Connection point on handle
-                translate([cup_radius_at_handle + 2, 0, 0])
+                translate([handle_radius + 2, 0, 0])
                     sphere(r = handle_width/3, $fn = 20);
             }
             
             // Upper connection
             hull() {
-                translate([cup_radius_at_handle, 0, 6])
+                translate([handle_radius, 0, 6])
                     sphere(r = handle_width/4, $fn = 20);
-                translate([cup_radius_at_handle + 4, 0, 6])
+                translate([handle_radius + 4, 0, 6])
                     sphere(r = handle_width/4, $fn = 20);
             }
             
             // Lower connection  
             hull() {
-                translate([cup_radius_at_handle, 0, -6])
+                translate([handle_radius, 0, -6])
                     sphere(r = handle_width/4, $fn = 20);
-                translate([cup_radius_at_handle + 4, 0, -6])
+                translate([handle_radius + 4, 0, -6])
                     sphere(r = handle_width/4, $fn = 20);
             }
         }
