@@ -66,14 +66,11 @@ module handle() {
             // Main handle loop
             difference() {
                 // Outer handle shape - toro posizionato correttamente
-                translate([cup_radius_at_handle + handle_width/2 + 2, 0, 0]) {
-                    rotate([90, 0, 0]) {
-                        rotate_extrude($fn = 50) {
+                translate([cup_radius_at_handle + 14, 0, 0])
+                    rotate([90, 0, 0])
+                        rotate_extrude($fn = 50)
                             translate([12, 0, 0])
                                 circle(r = handle_width/2, $fn = 20);
-                        }
-                    }
-                }
                 
                 // Cut away inner part of cup to avoid interference
                 cylinder(h = handle_width*2, 
@@ -93,23 +90,23 @@ module handle() {
                     sphere(r = handle_width/3, $fn = 20);
                 
                 // Connection point on handle
-                translate([cup_radius_at_handle + handle_width/2 + 2 - 12, 0, 0])
+                translate([cup_radius_at_handle + 2, 0, 0])
                     sphere(r = handle_width/3, $fn = 20);
             }
             
             // Upper connection
             hull() {
-                translate([cup_radius_at_handle, 0, 8])
+                translate([cup_radius_at_handle, 0, 6])
                     sphere(r = handle_width/4, $fn = 20);
-                translate([cup_radius_at_handle + handle_width/2 + 2 - 8, 0, 8])
+                translate([cup_radius_at_handle + 4, 0, 6])
                     sphere(r = handle_width/4, $fn = 20);
             }
             
             // Lower connection  
             hull() {
-                translate([cup_radius_at_handle, 0, -8])
+                translate([cup_radius_at_handle, 0, -6])
                     sphere(r = handle_width/4, $fn = 20);
-                translate([cup_radius_at_handle + handle_width/2 + 2 - 8, 0, -8])
+                translate([cup_radius_at_handle + 4, 0, -6])
                     sphere(r = handle_width/4, $fn = 20);
             }
         }
